@@ -1,8 +1,12 @@
 package au.org.hazelcast;
 
 import au.org.hazelcast.model.JsonWrapper;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
+import com.hazelcast.query.Predicate;
 import com.hazelcast.query.SqlPredicate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +27,7 @@ public class Application implements CommandLineRunner {
     @Autowired
     HazelcastInstance instance;
     @Autowired
-    org.boon.json.ObjectMapper mapper;
+    ObjectReader reader;
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
@@ -44,9 +48,16 @@ public class Application implements CommandLineRunner {
         Collection<JsonWrapper> nodes = imap.values(new SqlPredicate("attribute[name]=dheeraj999999"));
         log.info("Time to find: {}ms {}", System.currentTimeMillis() - start, nodes);
 
+        start = System.currentTimeMillis();
+        nodes = imap.values(new Predicate<String, JsonWrapper>() {
+            public boolean apply(Map.Entry<String, JsonWrapper> entry) {
+                return String.valueOf("dheeraj999999").equalsIgnoreCase(entry.getValue().getAttribute("name").asText());
+            }});
+        log.info("Time to find: {}ms {}", System.currentTimeMillis() - start, nodes);
+
     }
 
     private JsonWrapper generate(String value) throws IOException {
-        return new JsonWrapper(mapper.readValue("{\"name\":\"" + value + "\"}", Map.class));
+        return new JsonWrapper(reader.readTree("{\"name\":\"" + value + "\"}"));
     }
 }

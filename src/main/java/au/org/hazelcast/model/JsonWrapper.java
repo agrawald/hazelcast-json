@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.Map;
-
 /**
  * Created by proy on 19/11/16.
  */
@@ -15,13 +13,13 @@ import java.util.Map;
 @NoArgsConstructor
 public class JsonWrapper {
     @Getter @Setter
-    private Map<String, Object> rawJson;
+    private JsonNode rawJson;
 
-    public JsonWrapper(Map rawJson) {
+    public JsonWrapper(JsonNode rawJson) {
         this.rawJson = rawJson;
     }
 
-    public Object getAttribute(String key) {
+    public JsonNode getAttribute(String key) {
         return rawJson.get(key);
     }
 

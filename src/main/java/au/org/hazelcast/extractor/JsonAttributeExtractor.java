@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 public class JsonAttributeExtractor extends ValueExtractor<JsonWrapper, String> {
     @Override
     public void extract(JsonWrapper jsonWrapper, String string, ValueCollector valueCollector) {
-        Object node = jsonWrapper.getAttribute(string);
-        valueCollector.addObject(node);
+        JsonNode node = jsonWrapper.getAttribute(string);
+        valueCollector.addObject(node.textValue());
     }
 }

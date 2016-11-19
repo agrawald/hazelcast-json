@@ -1,6 +1,8 @@
 package au.org.hazelcast.config;
 
-import org.boon.json.JsonFactory;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -10,7 +12,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AppConfig {
     @Bean
-    org.boon.json.ObjectMapper objectMapper() {
-        return JsonFactory.create();
+    ObjectMapper objectMapper() {
+        return new ObjectMapper();
+    }
+
+    @Bean
+    ObjectReader reader() {
+        return objectMapper().readerFor(JsonNode.class);
     }
 }
