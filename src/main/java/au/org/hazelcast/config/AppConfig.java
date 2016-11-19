@@ -1,6 +1,6 @@
 package au.org.hazelcast.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.boon.json.JsonFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AppConfig {
     @Bean
-    ObjectMapper objectMapper() {
-        return new ObjectMapper();
+    org.boon.json.ObjectMapper objectMapper() {
+        return JsonFactory.create();
     }
 }
